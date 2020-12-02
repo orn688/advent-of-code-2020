@@ -32,7 +32,7 @@
 (defn run-solution
   [day part]
   (let [input (get-input day)]
-    ((get (get funcs day) part) input)))
+    (println ((nth (get funcs day) part) input))))
 
 (defn -main
   "I don't do a whole lot."

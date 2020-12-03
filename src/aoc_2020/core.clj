@@ -1,7 +1,8 @@
 (ns aoc-2020.core
   (:require [clj-http.client :as client])
   (:require [clojure.java.io :as io])
-  (:require [aoc-2020.day01 :as day01]))
+  (:require [aoc-2020.day01 :as day01])
+  (:require [aoc-2020.day02 :as day02]))
 
 (def year 2020)
 (def cache-dir ".cache")
@@ -27,7 +28,8 @@
       (spit path (fetch-input day)))
     (slurp path)))
 
-(def funcs {1 [aoc-2020.day01/part1 aoc-2020.day01/part2]})
+(def funcs {1 [day01/part1 day01/part2]
+            2 [day02/part1 day02/part2]})
 
 (defn run-solution
   [day part]

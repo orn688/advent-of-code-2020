@@ -2,7 +2,8 @@
   (:require [clj-http.client :as client])
   (:require [clojure.java.io :as io])
   (:require [aoc-2020.day01 :as day01])
-  (:require [aoc-2020.day02 :as day02]))
+  (:require [aoc-2020.day02 :as day02])
+  (:require [aoc-2020.day03 :as day03]))
 
 (def year 2020)
 (def cache-dir ".cache")
@@ -29,7 +30,8 @@
     (slurp path)))
 
 (def funcs {1 [day01/part1 day01/part2]
-            2 [day02/part1 day02/part2]})
+            2 [day02/part1 day02/part2]
+            3 [day03/part1 day03/part2]})
 
 (defn run-solution
   [day part]

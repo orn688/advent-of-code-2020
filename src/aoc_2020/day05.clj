@@ -27,7 +27,7 @@
       (case diff
         1 (find-missing-id seat-ids (inc index))
         2 (inc curr)
-        (throw (Exception. (format "bad diff between sead ids %d and %d" curr next)))))))
+        (throw (Exception. (format "bad diff between seat ids %d and %d" curr next)))))))
 
 (defn part2
   "Determines the narrator's seat ID (the only seat ID x such that x+1 and

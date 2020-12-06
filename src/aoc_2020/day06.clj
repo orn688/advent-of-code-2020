@@ -9,23 +9,27 @@
        (map set)))
 
 (defn parse-input
+  "Returns a sequence of groups, where each group is a sequence of sets
+  corresponding to the questions each group member answered 'yes' to."
   [orig-input]
   (->> orig-input
        str/trim
        (#(str/split % #"\n\n"))
        (map parse-group)))
 
+(defn count-all-yeses
+  [group]
+  (->> group
+       (apply clojure.set/union)
+       count))
+
 (defn part1
   "Returns the sum of the number of unique questions that any member of each
   group answered 'yes' to."
   [orig-input]
   (->> orig-input
-       str/trim
-       (#(str/split % #"\n\n"))
-       (map #(str/replace % #"\n" ""))
-       (map frequencies)
-       (map keys)
-       (map count)
+       parse-input
+       (map count-all-yeses)
        (reduce +)))
 
 (defn count-shared-yeses

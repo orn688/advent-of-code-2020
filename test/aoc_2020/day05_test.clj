@@ -1,13 +1,13 @@
 (ns aoc-2020.day05-test
   (:require [clojure.string :as str]
             [clojure.test :refer [deftest is testing]]
-            [aoc-2020.day05 :refer [part1 part2 seat-id]]))
+            [aoc-2020.day05 :refer [part1 part2]]))
 
 (deftest seat-id-test
   (testing "seat-id returns the correct seat ID"
-    (is (= (seat-id "BFFFBBFRRR") 567))
-    (is (= (seat-id "FFFBBBFRRR") 119))
-    (is (= (seat-id "BBFFBBFRLL") 820))))
+    (is (= (#'aoc-2020.day05/seat-id "BFFFBBFRRR") 567))
+    (is (= (#'aoc-2020.day05/seat-id "FFFBBBFRRR") 119))
+    (is (= (#'aoc-2020.day05/seat-id "BBFFBBFRLL") 820))))
 
 (def test-input-part1 "
 BFFFBBFRRR

@@ -61,11 +61,11 @@
       (throw (Exception. (format "can't parse passport '%s': %s" line (.getMessage e)))))))
 
 (defn parse-input
-  [orig-input]
+  [input]
   (map line-to-passport
        (map
         #(str/replace % #"\n" " ")
-        (str/split (str/trim orig-input) #"\n\n"))))
+        (str/split (str/trim input) #"\n\n"))))
 
 (defn valid-count
   [valid-func passports]
@@ -73,8 +73,10 @@
 
 (defn part1
   "Returns the number of passports that have all of the required fields."
-  [orig-input]
-  (valid-count valid-part1? (parse-input orig-input)))
+  [input]
+  (->> input
+       parse-input
+       (valid-count valid-part1?)))
 
 (defn field-valid?
   [passport field-name valid-func]
@@ -93,5 +95,7 @@
 (defn part2
   "Returns the number of passports for which all required fields exist and
   conform to the requirements."
-  [orig-input]
-  (valid-count valid-part2? (parse-input orig-input)))
+  [input]
+  (->> input
+       parse-input
+       (valid-count valid-part2?)))

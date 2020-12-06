@@ -3,11 +3,11 @@
 
 (def target-sum 2020)
 
-(defn parse-input
-  [orig-input]
-  (map #(Integer/parseInt %) (str/split-lines (str/trim orig-input))))
+(defn- parse-input
+  [input]
+  (map #(Integer/parseInt %) (str/split-lines (str/trim input))))
 
-(defn two-sum-product
+(defn- two-sum-product
   [elements index seen-elements]
   (when (>= index (count elements))
     -1)
@@ -17,16 +17,16 @@
       (* current-element target-val)
       (two-sum-product elements (+ index 1) (conj seen-elements current-element)))))
 
-(defn part1-impl
+(defn- part1-impl
   [input]
   (two-sum-product input 0 (set nil)))
 
 (defn part1
   "Determines the product of the two numbers that sum to 2020."
-  [orig-input]
-  (part1-impl (parse-input orig-input)))
+  [input]
+  (part1-impl (parse-input input)))
 
-(defn check-index-impl
+(defn- check-index-impl
   [elements mid-index last-index]
   (if (>= mid-index last-index)
     nil
@@ -46,14 +46,14 @@
         (< s target-sum) (check-index-impl elements (inc mid-index) last-index)
         :else (* x y z)))))
 
-(defn check-index
+(defn- check-index
   "Checks whether the given elements (a subvector containing a suffix of the
    original input) contain a trio of numbers that sum to 2020, where the first
    element must be in the trio."
   [elements]
   (check-index-impl elements 1 (dec (count elements))))
 
-(defn three-sum-product
+(defn- three-sum-product
   "Checks each index of the sorted elements to see if the index is the smallest
    in some trio of numbers that sum to 2020. Returns the product of the three
    numbers if it finds such a trio, else nil."
@@ -63,12 +63,12 @@
       (three-sum-product (subvec elements 1))
       res)))
 
-(defn part2-impl
+(defn- part2-impl
   [input]
   ; Sort the elements to enable faster three-sum searching.
   (three-sum-product (vec (sort input))))
 
 (defn part2
   "Determines the product of the three numbers that sum to 2020."
-  [orig-input]
-  (part2-impl (parse-input orig-input)))
+  [input]
+  (part2-impl (parse-input input)))

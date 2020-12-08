@@ -6,7 +6,8 @@
   (:require [aoc-2020.day03 :as day03])
   (:require [aoc-2020.day04 :as day04])
   (:require [aoc-2020.day05 :as day05])
-  (:require [aoc-2020.day06 :as day06]))
+  (:require [aoc-2020.day06 :as day06])
+  (:require [aoc-2020.day07 :as day07]))
 
 (def year 2020)
 (def cache-dir ".cache")
@@ -37,7 +38,8 @@
             3 [day03/part1 day03/part2]
             4 [day04/part1 day04/part2]
             5 [day05/part1 day05/part2]
-            6 [day06/part1 day06/part2]})
+            6 [day06/part1 day06/part2]
+            7 [day07/part1 day07/part2]})
 
 (defn run-solution
   [day part]

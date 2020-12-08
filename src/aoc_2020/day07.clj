@@ -2,6 +2,8 @@
   (:require [clojure.set])
   (:require [clojure.string :as str]))
 
+(def start-color "shiny gold")
+
 (defn- parse-contained-bag
   "'5 faded blue bags' -> ['faded blue' '5']"
   [bag]
@@ -29,6 +31,7 @@
         [color (into {} (parse-contents contents))]))))
 
 (def reachable
+  "Determines whether a bag of color `current` contains (directly or indirectly) any bags of color `target`."
   (memoize
    (fn
      [graph current target]
@@ -45,8 +48,6 @@
        (map parse-line)
        (into {})))
 
-(def start-color "shiny gold")
-
 (defn- filter-reachable
   [target graph]
   (filter #(reachable graph % target) (keys graph)))
@@ -59,5 +60,25 @@
        (filter-reachable start-color)
        count))
 
+(def total-bags
+  "Returns the total number of bags contained in a bag of color
+  `containing-color`."
+  (memoize
+   (fn
+     [containing-color graph]
+     (let [edges (get graph containing-color)]
+       (reduce + 0
+               (map
+                (fn
+                  [[color count]]
+                  ; For each bag, count the bag itself plus the number of bags
+                  ; it contains.
+                  (* count (inc (total-bags color graph))))
+                edges))))))
+
 (defn part2
-  [_])
+  "Returns the number of bag colors that can contain shiny gold bags."
+  [input]
+  (->> input
+       parse-input
+       (total-bags start-color)))

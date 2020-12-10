@@ -8,7 +8,8 @@
   (:require [aoc-2020.day05 :as day05])
   (:require [aoc-2020.day06 :as day06])
   (:require [aoc-2020.day07 :as day07])
-  (:require [aoc-2020.day08 :as day08]))
+  (:require [aoc-2020.day08 :as day08])
+  (:require [aoc-2020.day09 :as day09]))
 
 (def year 2020)
 (def cache-dir ".cache")
@@ -41,7 +42,8 @@
             5 [day05/part1 day05/part2]
             6 [day06/part1 day06/part2]
             7 [day07/part1 day07/part2]
-            8 [day08/part1 day08/part2]})
+            8 [day08/part1 day08/part2]
+            9 [day09/part1 day09/part2]})
 
 (defn run-solution
   [day part]
@@ -54,5 +56,5 @@
   (run-solution
    (Integer/parseInt day)
    ; Use 1-indexed part numbers.
-   (- (Integer/parseInt part) 1)))
+   (dec (Integer/parseInt part))))
 

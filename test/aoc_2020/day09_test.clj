@@ -28,3 +28,7 @@
 (deftest part1-test
   (testing "part1"
     (is (= (part1 test-input 5 5) 127))))
+
+(deftest part2-test
+  (testing "part2"
+    (is (= (part2 test-input 5 5) 62))))

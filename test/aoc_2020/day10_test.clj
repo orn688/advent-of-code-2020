@@ -55,3 +55,9 @@
     (is (= (part1 test-input) 35)))
   (testing "part1-input2"
     (is (= (part1 test-input2) 220))))
+
+(deftest part2-test
+  (testing "part2"
+    (is (= (part2 test-input) 8)))
+  (testing "part2-input2"
+    (is (= (part2 test-input2) 19208))))

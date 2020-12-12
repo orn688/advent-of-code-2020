@@ -15,6 +15,10 @@ L.LLLLLL.L
 L.LLLLL.LL
 ")
 
-(deftest part1-test
-  (testing "part1"
-    (is (= (part1 test-input) 37))))
+;; (deftest part1-test
+;;   (testing "part1"
+;;     (is (= (part1 test-input) 37))))
+
+(deftest part2-test
+  (testing "part2"
+    (is (= (part2 test-input) 26))))

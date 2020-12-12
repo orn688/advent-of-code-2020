@@ -44,7 +44,7 @@
        frequencies
        (#(get % target 0))))
 
-(defn- neighbor-count
+(defn- neighbor-count-part1
   "Counts the number of occupied seats adjacent (including diagonals) to the
   seat at the specified row and column. Assumes that the row and column are
   *not* at the edge of the seating grid, which is safe to assume because we
@@ -56,43 +56,92 @@
        (count-occurrences seat-occupied)))
 
 (defn- advance-seat
-  [seats row col]
+  [neighbor-count-func max-neighbors seats row col]
   (let [status (seat-status seats row col)]
     (cond
       (and
        (= status seat-empty)
-       (zero? (neighbor-count seats row col))) seat-occupied
+       (zero? (neighbor-count-func seats row col))) seat-occupied
       (and
        (= status seat-occupied)
-       (>= (neighbor-count seats row col) 4)) seat-empty
+       (>= (neighbor-count-func seats row col) max-neighbors)) seat-empty
       :else status)))
 
 (defn- advance-row
-  [seats row]
+  [neighbor-count-func max-neighbors seats row]
   (->> (range (count (first seats)))
-       (map #(advance-seat seats row %))))
+       (map #(advance-seat neighbor-count-func max-neighbors seats row %))))
 
 (defn- advance-one-round
-  [seats]
+  [neighbor-count-func max-neighbors seats]
   (->> (range (count seats))
-       (map #(advance-row seats %))
+       (map #(advance-row neighbor-count-func max-neighbors seats %))
        (map vec)
        vec))
 
 (defn- run-until-no-change
-  [seats]
-  (let [new-seats (advance-one-round seats)]
+  [neighbor-count-func max-neighbors seats]
+  (let [new-seats (advance-one-round neighbor-count-func max-neighbors seats)]
     (if (= seats new-seats)
       seats
-      (run-until-no-change new-seats))))
+      (run-until-no-change neighbor-count-func max-neighbors new-seats))))
 
-(defn part1
-  [input]
+(defn- run-simulation
+  [input neighbor-count-func max-neighbors]
   (->> input
        parse-input
-       run-until-no-change
+       (run-until-no-change neighbor-count-func max-neighbors)
        (map #(count-occurrences seat-occupied %))
        (reduce +)))
 
+(defn part1
+  "Runs the simulation until the seating stops changing, then returns the
+  number of occupied seats."
+  [input]
+  (run-simulation input neighbor-count-part1 4))
+
+(def neighbor-diffs
+  [[-1 -1]
+   [-1 0]
+   [-1 1]
+   [0 -1]
+   [0 1]
+   [1 -1]
+   [1 0]
+   [1 1]])
+
+(def neighbor-in-view
+  (memoize
+   (fn
+     [seats row col row-diff col-diff]
+     (let [nrow (+ row row-diff)
+           ncol (+ col col-diff)]
+       (cond
+         ; Reached the edge of the seating area without seeing an occupied seat.
+         (or
+          (neg? nrow) (neg? ncol)
+          (>= nrow (count seats)) (>= ncol (count (first seats)))) false
+         ; An empty seat blocks the view of the rest of the seats in line.
+         (= seat-empty (seat-status seats nrow ncol)) false
+         ; Found an occupied seat.
+         (= seat-occupied (seat-status seats nrow ncol)) true
+         ; Keep looking further.
+         :else (neighbor-in-view seats nrow ncol row-diff col-diff))))))
+
+(defn- neighbor-count-part2
+  "Counts the number of occupied seats that are within view of the specified
+  row or column along a vertical or horizontal line, or a diagonal."
+  [seats row col]
+  (->> neighbor-diffs
+       (map #(neighbor-in-view seats row col (first %) (second %)))
+       (count-occurrences true)))
+
+; TODO: This is super slow (~2 minutes to produce a final answer). It can
+; presumably be optimized further.
 (defn part2
-  [_])
+  "Runs the simulation until the seating stops changing, then returns the
+  number of occupied seats. Unlike part 1, neighbors are counted by whether
+  they're visible along a straight line or diagonal, and an occupied seat
+  will only turn empty if there are 5 or more neighbors."
+  [input]
+  (run-simulation input neighbor-count-part2 5))

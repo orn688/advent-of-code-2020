@@ -64,7 +64,6 @@
        (map-indexed vector)
        (map #(check-index program %))))
 
-
 (defn part2
   "Returns the value of the accumulator variable at the end of the program,
   for the only modified version of the program that causes it to complete

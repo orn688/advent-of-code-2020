@@ -47,11 +47,12 @@
 (defn- min-and-max
   "Returns the smallest and largest numbers from a list. Assumes the list is
   non-empty."
-  ([nums] (min-and-max nums ##Inf ##-Inf))
+  ([nums] (min-and-max nums nil nil))
   ([[num & rest] current-min current-max]
-   (if (empty? rest)
-     [current-min current-max]
-     (min-and-max rest (min num current-min) (max num current-max)))))
+   (cond
+     (nil? current-min) (min-and-max rest num num)
+     (empty? rest) [current-min current-max]
+     :else (min-and-max rest (min num current-min) (max num current-max)))))
 
 (defn- subbarray-sum
   "Returns the indices x and y such that the [x, y) subbarray of `num` sums

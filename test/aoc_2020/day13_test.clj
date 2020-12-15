@@ -10,3 +10,7 @@
 (deftest part1-test
   (testing "part1"
     (is (= (part1 test-input) 295))))
+
+(deftest part2-test
+  (testing "part2"
+    (is (= (part2 test-input) 1068781))))
